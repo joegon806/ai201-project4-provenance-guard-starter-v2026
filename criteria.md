@@ -41,33 +41,36 @@ Two things worth knowing before you pick numbers:
   differently twice. A target of "at most 1 in 10" against trials of 2, 1, 2 is
   a **miss**.
 
+
+All criteria are held across all three test trials.
 ---
-## 1. False Positives: At most 1 in 10 Human posts are falsely identified as AI.
+## 1. False Positives: At most 1 in 10 Human posts are falsely labeled as AI.
 
 <!-- Your criterion. It must name a number. -->
 
 
 
-**Why this target:** Taken directly from the example criterion, identifying a real human's work as AI is costly for user retention, and I believe 1 false positive in 10 human posts is a good ratio cutoff for false positives such that users are not deterred from returning to the writing site.
+**Why this target:** Taken directly from the example criterion, labeling a real human's work as AI is costly for user retention, and I believe 1 false positive in 10 human posts is a good ratio cutoff for false positives such that users are not deterred from returning to the writing site.
 
 
 
 ---
 
-## 2. True Negatives: No more than 1 in 3 AI posts are identified as Human.
+## 2. False Negatives: No more than 1 in 3 AI posts are falsely labeled as Human.
 
 <!-- Your criterion. -->
 
 
 
-**Why this target:** On the opposite side, the model should have a high enough quality to correctly identify the majority of AI posts. This metric is more lenient than the previous False Positives criterion, which is a more strict and higher-priority criterion.
+**Why this target:** On the opposite side, the model should have a high enough quality to correctly label the majority of AI posts. This metric is more lenient than the previous False Positives criterion, which is a more strict and higher-priority criterion.
 
 
 
 ---
 
-## 3. False Positives: The percentage of False Positives (out of all Human posts) is less than each of the other 'confusion matrix fields' individually.
-The other fields: True Pos/Real Pos, True Neg/Real Neg, False Neg/Real Pos, Unsure but really Pos /Pos, Unsure but really Neg /Neg.
+## 3. False Positives: The percentage of False Positives (out of all Human posts) is less than each of the other 'confusion matrix fields'.
+Unless one of the other fields is 0, in which case the False Positives should also be 0.
+The other fields: True AI/Real AI, True Human/Real Human, False Human/Real AI, Unsure but really AI /AI, Unsure but really Human /Human.
 
 <!-- Your criterion. -->
 
@@ -79,19 +82,19 @@ The other fields: True Pos/Real Pos, True Neg/Real Neg, False Neg/Real Pos, Unsu
 
 ---
 
-## 4. Label coverage: There are more human labels than unsure labels.
+## 4. Label coverage: Correct labels >= Unsure labels >= Incorrect labels, across the whole set.
 
 <!-- Your criterion. -->
 
 
 
-**Why this target:** Human labels are the least offensive, less so than unsure labels, so the model should skew towards them.
+**Why this target:** This is a basic quality test, checking that wrong labels are minimized, right labels are maximized, and unsure labels are more frequent than wrong labels but less than actual right labels.
 
 
 
 ---
 
-## 5. Score Spread: Clearly AI text and Clearly Human text should be 50%+ points apart.
+## 5. Score Spread: Clearly-AI text and Clearly-Human text should be at least 0.5 points apart, on the correct sides.
 
 <!-- Your criterion. -->
 
