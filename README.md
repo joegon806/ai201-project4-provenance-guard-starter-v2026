@@ -128,7 +128,15 @@ $ curl -X POST http://127.0.0.1:5000/submit \
 ```
 
 ```json
-{"timestamp": "2026-11-01T06:47:11+00:00", "content_id": "c_65eaf450fd24", "creator_id": "Joseph", "guess": "unsure", "model_score": 0.1171, "style_score": null, "combined_score": null, "label": "not built yet", "status": "decided"}
+{
+  "confidence": 0.1171,
+  "content_id": "c_e1e7572fc152",
+  "creator_id": "Joseph",
+  "guess": "unsure",
+  "label": "not built yet",
+  "model_score": 0.1171,
+  "style_score": null
+}
 ```
 
 **An appeal**
