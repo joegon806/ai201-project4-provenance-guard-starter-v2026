@@ -72,9 +72,9 @@
 <!-- Write the rule in words, then give the numbers. What happens when the two
      signals disagree? -->
 
-**The rule:**
+**The rule:** Calculate the average of the signals.
 
-**The numbers:**
+**The numbers:** (style_signal + model_signal) / 2
 
 **Where it lives:** `scoring.py::combine_signals`
 
@@ -82,7 +82,7 @@
      somewhere else, say where. -->
 
 **A case where my two signals split, and what my rule does with it:**
-
+`samples/clearly_ai` has style_signal 0.37 and model_signal 0.75. The combining rule averages them out to a score of 0.56.
 
 
 ---

@@ -32,6 +32,7 @@ anything together:
 
 import re
 import statistics
+import string
 
 
 def sentences(text: str) -> list[str]:
@@ -64,8 +65,14 @@ def sentence_length_spread(text: str) -> float:
     `stdev` raises on fewer than two values. Decide what that should return
     before the attack set decides for you.
     """
-    # TODO: replace this
-    return 0.0
+    text_sentences = sentences(text)    
+
+    # edge case: one-sentence submission => return 1 (flips to 0, all human) (let the other measures skew toward AI)
+    if len(text_sentences) <= 1:
+        return 1.0
+
+    sentence_lengths = [len(sentence) for sentence in text_sentences]
+    return statistics.stdev(sentence_lengths) / statistics.mean(sentence_lengths)
 
 
 def type_token_ratio(text: str) -> float:
@@ -80,8 +87,11 @@ def type_token_ratio(text: str) -> float:
     directly comparable on it, and if your test inputs vary a lot in length,
     that alone can look like a signal.
     """
-    # TODO: replace this
-    return 0.0
+    total_words = words(text)
+    if not total_words:
+        return 0.0
+    
+    return len(set(total_words)) / len(total_words)
 
 
 def punctuation_density(text: str) -> float:
@@ -94,8 +104,24 @@ def punctuation_density(text: str) -> float:
         more interesting than full stops, because they vary more between
         writers.
     """
-    # TODO: replace this
-    return 0.0
+    # implemented by Claude Code
+    # em dashes count double (in both punctuation and character counts, so the result stays at or below 1) to indicate high usage of AI
+    # periods, commas, and apostrophes are ignored from punctuation_count due to high frequency
+    ignored_chars = ".,'"
+
+    punctuation_count = 0
+    character_count = 0
+    for char in text:
+        weight = 2 if char == "—" else 1
+        character_count += weight
+        if char == "—" or (char in string.punctuation and char not in ignored_chars):
+            punctuation_count += weight
+
+    # edge case: empty text => no punctuation
+    if not character_count:
+        return 0.0
+
+    return punctuation_count / character_count
 
 
 # ── Combining them ───────────────────────────────────────────────────────────
@@ -122,8 +148,12 @@ def style_signal(text: str) -> float:
     you trust it. Plain and ordinary, not formal: formal prose reads as *human*
     to signal one, and it is plain writing that gets accused.
     """
-    # TODO: replace this
-    return 0.5
+
+    spread_score = 1 - min(1, sentence_length_spread(text)) # highest priority
+    token_score = 1-type_token_ratio(text)
+    punctuation_score = punctuation_density(text) # lowest priority
+
+    return (spread_score * 0.5) + (token_score * 0.3) + (punctuation_score * 0.2)
 
 
 if __name__ == "__main__":
