@@ -31,6 +31,10 @@ from flask import Flask, jsonify, request
 import audit
 import config
 
+import detector    
+import stylometry
+import scoring
+
 app = Flask(__name__)
 
 
@@ -212,17 +216,11 @@ def submit():
     
     # Step 3 - one real signal that we first tested from the terminal
     # python detector.py "some text"
-    import detector    
+
     model_score = detector.model_signal(text)
-
-    import stylometry
     style_score = stylometry.style_signal(text)
-
-    import scoring
     combined_score = scoring.combine_signals(model_score, style_score)
-
-    guess = "unsure"    
-    label = "not built yet"
+    guess, label = scoring.score_to_label(combined_score)
     
     # Step 4 - log the decision. The content_id is what /appeal needs later.
     content_id = f"c_{uuid.uuid4().hex[:12]}"
@@ -271,12 +269,30 @@ def appeal():
     """
     payload = request.get_json(silent=True) or {}
 
-    # TODO: delete this and build the route.
+    # take a content_id and the writer's reasoning
+    content_id = payload.get("content_id")
+    reasoning = payload.get("reasoning")
+
+    # check the content_id actually exists
+    entries = audit.entries_for(content_id)
+    if len(entries) < 1:
+        return jsonify({"error": "bad_request", "message": "content_id not found in audit entries."}), 400
+
+    # set the status to under_review
+    status = "under_review"
+    creator_id = entries[0].get("creator_id")
+
+    # write the appeal into the log next to the original decision
+    audit.log_appeal(
+        content_id=content_id,
+        creator_id=creator_id,
+        reasoning=reasoning
+    )
+
+    # confirm the appeal was logged
     return jsonify({
-        "error": "not_implemented",
-        "message": "POST /appeal isn't built yet — see the TODO in app.py.",
-        "you_sent": payload,
-    }), 501
+        "message": "Your audit has been logged for further review.",
+    }), 200
 
 
 # ── Already works ─────────────────────────────────────────────────────────────

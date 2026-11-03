@@ -96,15 +96,15 @@
 
 | Label | Score range | The exact text a reader sees |
 |---|---|---|
-| high-confidence human |  |  |
-| unsure |  |  |
-| high-confidence AI |  |  |
+| high-confidence human | 0.00-0.50 | `The system has detected this text as human-written.` |
+| unsure | 0.51-0.75 | `The system has detected this text may be human-written.` |
+| high-confidence AI | 0.76-1.00 | `The system has detected AI-generated writing in your text.` |
 
 **Why I worded the "unsure" one this way:**
 <!-- It's the hardest of the three. It has to admit uncertainty without
      sounding like an accusation, because the person reading it may well have
      written every word themselves. -->
-
+The label text does not make any direct accusations nor does it mention AI; its only indication of being unsure is the discreet usage of "may be". The text also explicitly mentions that the system is making the decision, which implies that a dumb machine is making the accusation and not a discerning human.
 
 
 ---
@@ -144,11 +144,13 @@ $ curl -X POST http://127.0.0.1:5000/submit \
 ```bash
 $ curl -X POST http://127.0.0.1:5000/appeal \
   -H "Content-Type: application/json" \
-  -d '{"content_id": "...", "reasoning": "..."}'
+  -d '{"content_id": "c_b72b0c80dd82", "reasoning": "Its not ai"}'
 ```
 
 ```json
-
+{
+  "message": "Your audit has been logged for further review."
+}
 ```
 
 **What the log shows afterwards**
@@ -158,7 +160,41 @@ $ curl "http://127.0.0.1:5000/log?limit=3"
 ```
 
 ```json
-
+{
+  "count": 3,
+  "entries": [
+    {
+      "combined_score": 0.5631333432372532,
+      "content_id": "c_64d32434f700",
+      "creator_id": "joseph",
+      "guess": "unsure",
+      "label": "The system has detected this text may be human-written.",
+      "model_score": 0.7544,
+      "status": "decided",
+      "style_score": 0.37186668647450627,
+      "timestamp": "2026-11-02T23:50:15+00:00"
+    },
+    {
+      "combined_score": 0.8281641475924024,
+      "content_id": "c_b72b0c80dd82",
+      "creator_id": "joseph",
+      "guess": "ai",
+      "label": "The system has detected AI-generated writing in your text.",
+      "model_score": 0.978,
+      "status": "decided",
+      "style_score": 0.6783282951848048,
+      "timestamp": "2026-11-02T23:50:24+00:00"
+    },
+    {
+      "content_id": "c_b72b0c80dd82",
+      "creator_id": "joseph",
+      "event": "appeal",
+      "reasoning": "Its not ai",
+      "status": "under_review",
+      "timestamp": "2026-11-03T00:10:45+00:00"
+    }
+  ]
+}
 ```
 
 ---
