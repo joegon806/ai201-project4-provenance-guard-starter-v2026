@@ -135,13 +135,12 @@ $ curl -X POST http://127.0.0.1:5000/submit \
 
 ```json
 {
-  "confidence": 0.1171,
-  "content_id": "c_e1e7572fc152",
+  "content_id": "c_8e51c89fb103",
   "creator_id": "Joseph",
-  "guess": "unsure",
-  "label": "not built yet",
+  "guess": "human",
+  "label": "The system has detected this text as human-written.",
   "model_score": 0.1171,
-  "style_score": null
+  "style_score": 0.0
 }
 ```
 
@@ -226,6 +225,7 @@ $ curl "http://127.0.0.1:5000/log?limit=3"
 - suggestions in dealing with edge cases in type_token_ratio
 - the code implementation of punctuation_dentsity, instructing it to count em-dashes as double, as well as feedback on the algorithm
 - three curl submit commands that can trigger each of the three score labels
+- implementation of a try-except statement in the submit function
 
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 

@@ -44,7 +44,7 @@ Two things worth knowing before you pick numbers:
 
 All criteria are held across all three test trials.
 ---
-## 1. False Positives: At most 1 in 10 Human posts are falsely labeled as AI.
+## 1. False Positives: At most 1 in 10 Human-written posts are falsely labeled as AI.
 
 <!-- Your criterion. It must name a number. -->
 
@@ -70,7 +70,16 @@ All criteria are held across all three test trials.
 
 ## 3. False Positives: The percentage of False Positives (out of all Human posts) is less than each of the other 'confusion matrix fields'.
 Unless one of the other fields is 0, in which case the False Positives should also be 0.
-The other fields: True AI/Real AI, True Human/Real Human, False Human/Real AI, Unsure but really AI /AI, Unsure but really Human /Human.
+```
+This field to check:
+(All posts that are really Human, Labeled AI) / (All Real Human posts),
+The other fields: 
+(All posts that are really AI, Labeled AI) / (All Real AI posts),
+(All posts that are really Human, Labeled Human) / (All Real Human posts),
+(All posts that are really AI, Labeled Human) / (All Real AI posts),
+(All posts that are really AI, Labeled Unsure) / (All Real AI posts),
+(All posts that are really Human, Labeled Unsure) / (All Real Human posts)
+```
 
 <!-- Your criterion. -->
 

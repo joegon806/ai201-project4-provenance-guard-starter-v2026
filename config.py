@@ -46,6 +46,10 @@ DETECTOR_MODEL = os.getenv("AI201_DETECTOR_MODEL", "gpt2")
 # 300 words, which is enough for the signal to mean something.
 DETECTOR_MAX_TOKENS = 400
 
+# Style Score Weights
+SPREAD_SCORE_SIGNAL = 0.5
+TOKEN_SCORE_SIGNAL = 0.3
+PUNCTUATION_SCORE_SIGNAL = 0.2
 
 # ─── Scoring (Milestone 4) ───────────────────────────────────────────────────
 # How much each signal counts toward the combined score.

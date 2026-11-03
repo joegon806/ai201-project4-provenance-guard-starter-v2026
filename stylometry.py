@@ -33,6 +33,7 @@ anything together:
 import re
 import statistics
 import string
+import config
 
 
 def sentences(text: str) -> list[str]:
@@ -153,7 +154,7 @@ def style_signal(text: str) -> float:
     token_score = 1-type_token_ratio(text)
     punctuation_score = punctuation_density(text) # lowest priority
 
-    return (spread_score * 0.5) + (token_score * 0.3) + (punctuation_score * 0.2)
+    return (spread_score * config.SPREAD_SCORE_SIGNAL) + (token_score * config.TOKEN_SCORE_SIGNAL) + (punctuation_score * config.PUNCTUATION_SCORE_SIGNAL)
 
 
 if __name__ == "__main__":

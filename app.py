@@ -152,14 +152,12 @@ def health():
     })
 
 
-# ── YOU BUILD THIS ────────────────────────────────────────────────────────────
 
 @app.post("/submit")
 # @limiter.limit(f"{config.RATE_LIMIT_PER_MINUTE}/minute;{config.RATE_LIMIT_PER_DAY}/day")
 def submit():
     """
     Take a piece of text, decide about it, log the decision, answer.
-    ← TODO — Milestones 3, 4 and 5
 
     Expects JSON:
         {"text": "...", "creator_id": "..."}
@@ -174,30 +172,7 @@ def submit():
     every row of next unit's evidence says `null` — which is exactly the
     diagnostic you need to name a stage and a mechanism. You do not want to
     find that out after running the attack set.
-
-    ─────────────────────────────────────────────────────────────────────────
-    Build it in three passes. Do not skip ahead — the ordering is how you tell
-    a broken route from a broken signal.
-
-    **Milestone 3 — the route answers.**
-      1. Return a hardcoded response. Confirm `curl` gets it back before you
-         add any logic at all.
-      2. Then pull `text` and `creator_id` out of the payload.
-      3. Then call ONE signal — `detector.model_signal(text)` — and put the
-         real number in. Leave confidence and label as placeholders.
-      4. Log every submission with `audit.log_decision(...)`. The content_id
-         matters: `/appeal` needs it, and a student who skips it rebuilds this
-         whole flow later.
-
-    **Milestone 4 — the second signal and the score.**
-      5. Add `stylometry.style_signal(text)`.
-      6. Combine them with `scoring.combine_signals(...)`.
-      7. Log BOTH signal scores alongside the combined one, and put them in the
-         response too. Next unit you can't diagnose anything without them.
-
-    **Milestone 5 — the label.**
-      8. `scoring.score_to_label(...)` and put the real label in the response.
-
+    
     ─────────────────────────────────────────────────────────────────────────
     Worth deciding early, because unit 8's attack set will decide it for you:
     what should this do when `text` is missing, empty, or enormous? A crash on
@@ -206,23 +181,30 @@ def submit():
     # implemented in class by instructor Fahad Sami
     # (edited by Joseph Gonzales for 4th commit)
 
-    # Step 2 - JSON goes in: pull text and creator_id out of the body
+    # JSON goes in: pull text and creator_id out of the body
     payload = request.get_json(silent=True) or {}
     text = payload.get("text")
     creator_id = payload.get("creator_id", "unknown")
 
     if not isinstance(text, str) or not text.strip():
-            return jsonify({"error": "bad_request", "message": "Send JSON with a non-empty \"text\"."}), 400
+        return jsonify({"error": "bad_request", "message": "Send JSON with a non-empty \"text\"."}), 400
     
-    # Step 3 - one real signal that we first tested from the terminal
-    # python detector.py "some text"
+    # first signal: model signal
+    # try-except sttmt written by Claude Code
+    try:
+        model_score = detector.model_signal(text)
+    except detector.DetectorUnavailable as exc:
+        return jsonify({"error": "detector_unavailable", "message": str(exc)}), 503
+    except ValueError as exc:
+        return jsonify({"error": "bad_request", "message": str(exc)}), 400
 
-    model_score = detector.model_signal(text)
+    # second signal: style signal
     style_score = stylometry.style_signal(text)
+
     combined_score = scoring.combine_signals(model_score, style_score)
     guess, label = scoring.score_to_label(combined_score)
     
-    # Step 4 - log the decision. The content_id is what /appeal needs later.
+    # decision log
     content_id = f"c_{uuid.uuid4().hex[:12]}"
     audit.log_decision(
         content_id=content_id,
@@ -235,12 +217,12 @@ def submit():
         status="decided",
     )
 
-    # Step 1 - the route answers. Hardcoded without any logic yet.
+    # json return
     return jsonify({
         "content_id": content_id,
         "creator_id": creator_id,
         "guess": guess,
-        "confidence": model_score, # placeholder for the time being, redundant with model_score 
+        #"confidence": model_score, # placeholder for the time being, redundant with model_score 
         "label": label,
         "model_score": model_score,
         "style_score": style_score,
@@ -278,10 +260,7 @@ def appeal():
     if len(entries) < 1:
         return jsonify({"error": "bad_request", "message": "content_id not found in audit entries."}), 400
 
-    # set the status to under_review
-    status = "under_review"
     creator_id = entries[0].get("creator_id")
-
     # write the appeal into the log next to the original decision
     audit.log_appeal(
         content_id=content_id,
