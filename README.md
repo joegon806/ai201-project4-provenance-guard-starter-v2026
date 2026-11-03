@@ -38,7 +38,13 @@
 
 <!-- The path a submission takes, from arriving to the label a reader sees.
      Six or seven steps — this is the trace you wrote in Milestone 1. -->
-
+- The author submits writing text
+- The text gets a model signal, which checks the text's meaning and how it indicates AI usage.
+- The text gets a style signal, which checks the text's structural style and how that indicates AI usage.
+- The two signals are combined to get a score for the text.
+- The text is given a label of "human", "ai", or "unsure" based on the score.
+- The app displays the label and a message based on it.
+- The author is provided with an appeal function, to refute the label and provide reasoning, which logs the text for further review.
 
 
 ---
@@ -53,19 +59,19 @@
 
 ### Signal one — the model signal
 
-**What it measures:**
+**What it measures:** The perplexity / predictability of the text's meaning
 
-**Why that might differ between human and AI writing:**
+**Why that might differ between human and AI writing:** A human could write predictably without unique meaning, and an AI could write unpredictably with unconventional meaning.
 
-**What it can't see:**
+**What it can't see:** Text structure and style, who wrote the text, text not within 3 to 400 tokens
 
 ### Signal two — the style signal
 
-**What it measures:**
+**What it measures:** Text shape/style: sentence length variance, word variance, and punctuation density
 
-**Why that might differ between human and AI writing:**
+**Why that might differ between human and AI writing:** A human might write very uniform and repetitive sentences, and an AI might write sentences with variable length and varied words.
 
-**What it can't see:**
+**What it can't see:** Text meaning, who wrote the text, text less than 3 tokens
 
 ### The combining rule
 
@@ -203,15 +209,23 @@ $ curl "http://127.0.0.1:5000/log?limit=3"
 
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Whether each of my five criteria could be checked by someone who couldn't ask what I meant.
+- *What came back:* Pointers for each criterion on how to make them less ambiguous.
+- *What I changed:* I edited and tightened my criteria based on the advice.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Why the curl command would fail to connect to the port
+- *What came back:* Advice to run python app.py in a separate terminal to start the Flask server.
+- *What I changed:* I remembered from then on to activate the server in a separate terminal whenever I need to run the app or its commands.
+
+**Other things I asked AI for**
+- an outline of the path of a piece of text through the system, AFTER I had written it myself, to verify that I extracted the correct steps
+- help in Milestone 1: an explanation of what the two signals measure, and a trace through the false positive case
+- a message a writer would send if the system labeled their real human writing as AI
+- suggestions in dealing with edge cases in type_token_ratio
+- the code implementation of punctuation_dentsity, instructing it to count em-dashes as double, as well as feedback on the algorithm
+- three curl submit commands that can trigger each of the three score labels
 
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
