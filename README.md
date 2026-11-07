@@ -269,11 +269,29 @@ can look like one. --> per address
 <!-- Choose entries that show the interesting failures, not the ten easiest. -->
 
 ```json
+{"timestamp": "2026-11-06T22:50:55+00:00", "content_id": "c_b81e49a74d79", "creator_id": "attacker_EV01", "guess": "human", "model_score": 0.1635, "style_score": 0.4442642855806437, "combined_score": 0.30388214279032183, "label": "The system has detected this text as human-written.", "status": "decided"}
 
+{"timestamp": "2026-11-06T22:50:55+00:00", "content_id": "c_24a06431145a", "creator_id": "attacker_EV04", "guess": "unsure", "model_score": 0.6114, "style_score": 0.44313132554756074, "combined_score": 0.5272656627737804, "label": "The system has detected this text may be human-written.", "status": "decided"}
+
+{"timestamp": "2026-11-06T22:50:56+00:00", "content_id": "c_a15f247f0d51", "creator_id": "attacker_EV09", "guess": "unsure", "model_score": 0.7042, "style_score": 0.34300859436924613, "combined_score": 0.5236042971846231, "label": "The system has detected this text may be human-written.", "status": "decided"}
+
+{"timestamp": "2026-11-06T22:50:57+00:00", "content_id": "c_48b0edc4b540", "creator_id": "attacker_EV10", "guess": "unsure", "model_score": 0.9792, "style_score": 0.5064562243087676, "combined_score": 0.7428281121543838, "label": "The system has detected this text may be human-written.", "status": "decided"}
+
+{"timestamp": "2026-11-06T22:50:57+00:00", "content_id": "c_17ffd6bda830", "creator_id": "attacker_FP02", "guess": "unsure", "model_score": 0.7387, "style_score": 0.46259292560184956, "combined_score": 0.6006464628009248, "label": "The system has detected this text may be human-written.", "status": "decided"}
+
+{"timestamp": "2026-11-06T22:50:59+00:00", "content_id": "c_1ac37afb3c1c", "creator_id": "attacker_PI05", "guess": "human", "model_score": 0.6401, "style_score": 0.27632524835985556, "combined_score": 0.4582126241799278, "label": "The system has detected this text as human-written.", "status": "decided"}
+
+{"timestamp": "2026-11-06T22:50:59+00:00", "content_id": "c_f62f71bd164f", "creator_id": "attacker_MF04", "guess": "human", "model_score": 0.0112, "style_score": 0.4161290322580645, "combined_score": 0.21366451612903226, "label": "The system has detected this text as human-written.", "status": "decided"}
+
+{"timestamp": "2026-11-06T22:51:02+00:00", "content_id": "c_de6a6b932adf", "creator_id": "attacker_MF08", "guess": "ai", "model_score": 0.9876, "style_score": 0.5968874317013005, "combined_score": 0.7922437158506503, "label": "The system has detected AI-generated writing in your text.", "status": "decided"}
+
+{"timestamp": "2026-11-06T22:51:02+00:00", "content_id": "c_89a58b2509ce", "creator_id": "unknown", "guess": "human", "model_score": 0.2395, "style_score": 0.0, "combined_score": 0.11975, "label": "The system has detected this text as human-written.", "status": "decided"}
+
+{"timestamp": "2026-11-06T22:51:03+00:00", "creator_id": "attacker_flood", "event": "rejected", "status": "rejected", "reason": "rate_limited", "limit": "5 per 1 minute"}
 ```
 
 **The single worst outcome** — the one I'd least want to explain to a writer
-whose work got caught by it:
+whose work got caught by it: **FP03, a non-native English speaker writing carefully** — `unsure`. Insinuating that the writing of a non-native English speaker could be AI-generated implies that the author's writing is improper or alien, which could be seen as offensive, especially since learning a langugae you're not native to is difficult.
 
 
 
