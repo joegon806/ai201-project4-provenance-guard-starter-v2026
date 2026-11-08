@@ -109,7 +109,7 @@ The other fields:
 
 
 
-**Why this target:** The model recognize clealy human text and clearly AI text to be on two opposite sides of the scoring spectrum, which is ensured if they are at least half of the spectrum apart in distance.
+**Why this target:** The model should recognize clearly human text and clearly AI text to be on two opposite sides of the scoring spectrum, which is ensured if they are at least half of the spectrum apart in distance.
 
 
 

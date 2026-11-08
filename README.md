@@ -303,17 +303,80 @@ whose work got caught by it: **FP03, a non-native English speaker writing carefu
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. False Positives: At most 1 in 10 Human-written posts are falsely labeled as AI. | <= 1/10 | 0/10 | 0/10 | 0/10 | MET |
+| 2. False Negatives: No more than 1 in 3 AI posts are falsely labeled as Human. | <= 3/9 | 6/9 | 6/9 | 6/9 | MISSED |
+| 3. False Positives: The percentage of False Positives (out of all Human posts) is less than each of the other 'confusion matrix fields'. | less than all | less than all (0) | less than all (0) | less than all (0) | MET |
+| 4. Label coverage: Correct labels >= Unsure labels >= Incorrect labels, across the whole set. | Correct <= Unsure <= Incorrect | C 13, U 6, I 11  | C 13, U 6, I 11 | C 13, U 6, I 11 | MISSED |
+| 5. Score Spread: Clearly-AI text and Clearly-Human text should be at least 0.5 points apart, on the correct sides. | AI is >= 0.5 above Human | AI 0.38, Human 0.28 | AI 0.38, Human 0.28 | AI 0.38, Human 0.28 | MISSED |
 
 **Real output from one trial**, pasted as text, naming the file and function
 that produced it:
 
-```json
+All json output were produced by run_eval.py/main().
 
+Criterion 1. False Positives: At most 1 in 10 Human-written posts are falsely labeled as AI.
+```json
+{
+     "status": 200,
+     "guess": "unsure",
+     "confidence": null,
+     "model_score": 0.8757,
+     "style_score": 0.5052865039214494,
+     "label": "The system has detected this text may be human-written.",
+     "sent": "When I attended high school, I was introduced to Computer Science clas"
+},
+```
+
+Criterion 2. False Negatives: No more than 1 in 3 AI posts are falsely labeled as Human.
+```json
+{
+    "status": 200,
+    "guess": "human",
+    "confidence": null,
+    "model_score": 0.3356,
+    "style_score": 0.4092314532915427,
+    "label": "The system has detected this text as human-written.",
+    "sent": "The old lighthouse on the northern point hasn't guided a ship in decad"
+},
+```
+
+Criterion 3. False Positives: The percentage of False Positives (out of all Human posts) is less than each of the other 'confusion matrix fields'.
+```json
+{
+    "status": 200,
+    "guess": "human",
+    "confidence": null,
+    "model_score": 0.6689,
+    "style_score": 0.05764669642892092,
+    "label": "The system has detected this text as human-written.",
+    "sent": "Hi! It looks like you're testing\u2014everything's working. How can I help "
+},
+```
+
+Criterion 4. Label coverage: Correct labels >= Unsure labels >= Incorrect labels, across the whole set.
+```json
+{
+    "status": 200,
+    "guess": "unsure",
+    "confidence": null,
+    "model_score": 0.8757,
+    "style_score": 0.5052865039214494,
+    "label": "The system has detected this text may be human-written.",
+    "sent": "When I attended high school, I was introduced to Computer Science clas"
+},
+```
+
+Criterion 5. Score Spread: Clearly-AI text and Clearly-Human text should be at least 0.5 points apart, on the correct sides.
+```json
+{
+    "status": 200,
+    "guess": "human",
+    "confidence": null,
+    "model_score": 0.2863,
+    "style_score": 0.2694719748957124,
+    "label": "The system has detected this text as human-written.",
+    "sent": "ok is it just me or is the cartoon thing of \"the prey actually *wants*"
+},
 ```
 
 **Diagnoses**
