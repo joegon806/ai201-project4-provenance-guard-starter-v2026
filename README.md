@@ -395,6 +395,14 @@ Criterion 5. Score Spread: Clearly-AI text and Clearly-Human text should be at l
 
      Look for a pattern. Five failures on one signal is one problem, not five. -->
 
+*Missed Criteria:* All 3 missed criteria (False Negatives, Label Coverage, Score Spread) were missed because the model produced no guesses labeled "AI". This is likely because the style score produced by stylometry.py/style_signal() is so low that it never goes above 0.52, which means the combined score (which averages the two signals) only ever gets up to 0.76 with a model_score of 1, which only barely passes the AI cutoff of 0.75.
+
+
+*Broke Attacks:*
+The evasions Broke the system because the scoring system doesn't go high enough to get into the AI cutoff, as explained in the Missed Criteria.
+RQ06 (creator_id is an object) Broke because the entry was accepted and logged with an object as the creator_id. It was accepted because type checking is not implemented for getting creator_id in app.py/submit().
+RQ07 (body is a JSON array, not an object) crashed because when app.py/submit() tried to retrieve the text field, the JSON array itself doesn't have a dedicated text field.
+RQ10, RQ11 were rate limited because five previous attacks, RQ02 and RQ06-09, don’t have a parseable creator_id, so the rate_limit_key() in app.py falls back to using post’s IP address as its creator, which is the same across all five. Those five attacks from the same creator hit the rate limit of five posts per minute per creator, and because RQ10 and RQ11 don’t have parseable creator_ids either, the same IP address is also considered as their creator, so they are guarded by the rate limit. To test these attacks, the rate limit will be loosened in a later run.
 
 
 ---

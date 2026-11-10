@@ -87,6 +87,8 @@ The other fields:
 
 **Why this target:** Again, False Positives are the most offensive label, so the model must seek to minimize them above all other labels.
 
+**Revised in unit 8:** ...in a set with an equal number of human-written and AI-written posts.
+**Why revised:** The original criterion did not give a baseline for the post set or the amount of posts each confusion matrix field could have. If someone were to test this criterion on a set of only Human posts, the criterion would be inaccurately Met.
 
 
 ---
@@ -111,6 +113,8 @@ The other fields:
 
 **Why this target:** The model should recognize clearly human text and clearly AI text to be on two opposite sides of the scoring spectrum, which is ensured if they are at least half of the spectrum apart in distance.
 
+**Revised in unit 8:** The average score of all Clearly-AI text posts should be at least 0.5 points higher than the average score of all Clearly-AI text posts.
+**Why revised:** The original criterion was not clear about how the scores of multiple text posts should be measured.
 
 
 ---
