@@ -226,6 +226,8 @@ $ curl "http://127.0.0.1:5000/log?limit=3"
 - the code implementation of punctuation_dentsity, instructing it to count em-dashes as double, as well as feedback on the algorithm
 - three curl submit commands that can trigger each of the three score labels
 - implementation of a try-except statement in the submit function
+- explanations for the ways in which the BROKE attacks broke the system and the stages where the breaks occurred
+- help in figuring out why the model initially wouldn't give AI labels
 
 <!-- ═══════════════════════ UNIT 8 — THE TEST ═══════════════════════ -->
 
@@ -439,13 +441,20 @@ Additionally, Criterion 3 was not exactly met because the number of False Positi
 <!-- For each attack still getting through and each criterion still missed:
      what you'd do, and why you stopped. -->
 
+For Criteria 1 and 5 and the Evasion attacks, I would conduct more research into the distinctive traits of human writing and AI writing so I can fine-tune the style signal to be more accurate and widen the gap between AI post scores and Human post scores. 
+
+I haven't taken the extra effort because as I'm writing this the actual deadline for this assignment has passed and I'm aiming to complete and submit my work before it's too late.
+
+For Criterion 4, I would shorten and otherwise adjust the gap for Unsure labels. 
+For Attacks RQ06 (creator_id is an object) and RQ07 (body is a JSON array, not an object), I would implement type checking for the payload and its fields, ensuring that the payload is a JSON object and that the creator_id is either a string or not provided. 
+The reason I haven't worked on the fixes for Criterion 4 and the malformed attacks is because the assignment instructs for one single fix, which I implemented for the style signal.
 
 
 **The trade I'd make if this ran for real:**
 
 <!-- Two sentences. Fewer wrong accusations means more AI text getting through.
      Say which way you'd go and WHO PAYS FOR IT. -->
-
+I would make the tradeoff of False Positives for more AI text getting through. Fewer people would have their work accused as AI-written, but the cost is that this system and its stakeholders (such as users who pay money to view Human writing on this site) could be more easily exploitable by AI text generators.
 
 
 <!-- ═════════════════════════════════════════════════════════════════════
