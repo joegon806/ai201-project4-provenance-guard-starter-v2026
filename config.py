@@ -59,7 +59,7 @@ PUNCTUATION_SCORE_SIGNAL = 0.2
 # decide, it goes here.
 
 WEIGHT_MODEL_SIGNAL = 0.5
-WEIGHT_STYLE_SIGNAL = 0.5
+WEIGHT_STYLE_SIGNAL = 1
 
 
 # ─── Thresholds (Milestone 5) ────────────────────────────────────────────────

@@ -55,8 +55,10 @@ def combine_signals(model_score: float, style_score: float) -> float:
     # combining rule: take the average of the two signals
     # leaving as-is; the weights are both 0.5, which is the same as averaging the two signals
     return (
+        min(1.0, 
         config.WEIGHT_MODEL_SIGNAL * model_score
         + config.WEIGHT_STYLE_SIGNAL * style_score
+        )
     )
 
 
